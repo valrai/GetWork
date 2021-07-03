@@ -7,6 +7,8 @@ defmodule GetworkWeb.Router do
 
   scope "/api", GetworkWeb do
     pipe_through :api
+
+    resources "/users", UserController
   end
 
   # Enables LiveDashboard only for development
