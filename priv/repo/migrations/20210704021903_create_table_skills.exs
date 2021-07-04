@@ -1,8 +1,8 @@
-defmodule Getwork.Repo.Migrations.CreateTableSkill do
+defmodule Getwork.Repo.Migrations.CreateTableSkills do
   use Ecto.Migration
 
   def change do
-    create table :skill, primary_key: false do
+    create table :skills, primary_key: false do
       add :name, :string, primary_key: true
 
       timestamps()

@@ -5,7 +5,7 @@ defmodule Getwork.Skills.Skill do
   @primary_key {:name, :string, []}
   @derive {Phoenix.Param, key: :name}
 
-  schema "skill" do
+  schema "skills" do
     timestamps()
   end
 
