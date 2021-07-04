@@ -11,6 +11,7 @@ defmodule GetworkWeb.Router do
     resources "/users", UserController
     resources "/claims", ClaimController
     resources "/roles", RoleController
+    resources "/addresses", AddressController
   end
 
   # Enables LiveDashboard only for development
