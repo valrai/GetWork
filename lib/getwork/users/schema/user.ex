@@ -4,6 +4,8 @@ defmodule Getwork.Users.User do
   import Ecto.Changeset
   import Bcrypt, only: [hash_pwd_salt: 1]
 
+  alias Getwork.Candidates.Candidate
+
   @required_fields [:email, :username, :is_active, :password_hash]
   @primary_key {:id, Ecto.UUID, autogenerate: true}
 
@@ -14,6 +16,8 @@ defmodule Getwork.Users.User do
     field :password_hash, :string, virtual: true
     field :suspension_end_date, :naive_datetime
     field :username, :string
+
+    has_one :candidate, Candidate
 
     timestamps()
   end
@@ -40,6 +44,7 @@ defmodule Getwork.Users.User do
     case changeset do
       %Ecto.Changeset{valid?: true, changes: %{password: pass}} ->
         put_change(changeset, :password_hash, hash_pwd_salt(pass))
+
       _ ->
         changeset
     end
