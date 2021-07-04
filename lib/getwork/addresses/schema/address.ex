@@ -1,7 +1,10 @@
 defmodule Getwork.Addresses.Address do
   use Ecto.Schema
+
   import Ecto.Changeset
+
   alias Getwork.Addresses.Address
+  alias Getwork.Companies.Company
 
   @required_fields [:zip_code, :state, :city, :address_line_one]
   @primary_key {:id, Ecto.UUID, autogenerate: true}
@@ -14,6 +17,7 @@ defmodule Getwork.Addresses.Address do
     field :address_line_two, :string
 
     has_one :address, Address
+    has_one :company, Company
 
     timestamps()
   end
