@@ -4,6 +4,7 @@ defmodule Getwork.Users.User do
   import Ecto.Changeset
   import Bcrypt, only: [hash_pwd_salt: 1]
 
+  @required_fields [:email, :username, :is_active, :password_hash]
   @primary_key {:id, Ecto.UUID, autogenerate: true}
 
   schema "users" do
@@ -20,19 +21,19 @@ defmodule Getwork.Users.User do
   @doc false
   def changeset(user, attrs) do
     user
-    |> cast(attrs, [:email, :password, :password_hash, :username, :is_active, :suspension_end_date])
+    |> cast(attrs, [:suspension_end_date, :password] ++ @required_fields)
     |> validate()
   end
 
   def validate(changeset) do
     changeset
-    |> validate_required([:email, :password, :username, :is_active])
+    |> put_password_hash
+    |> validate_required(@required_fields)
     |> validate_format(:email, ~r/^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)
     |> validate_length(:email, max: 200)
     |> validate_length(:password, min: 6)
     |> unique_constraint(:email)
     |> unique_constraint(:username)
-    |> put_password_hash
   end
 
   defp put_password_hash(changeset) do
