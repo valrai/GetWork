@@ -30,3 +30,6 @@ getwork-*.tar
 # Enviroment Variables
 .env
 **secret.exs
+
+# VSCode
+/.vscode
