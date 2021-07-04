@@ -14,6 +14,7 @@ defmodule GetworkWeb.Router do
     resources "/addresses", AddressController
     resources "/languages", LanguageController
     resources "/skills", SkillController
+    resources "/phone_numbers", PhoneNumberController
   end
 
   # Enables LiveDashboard only for development
