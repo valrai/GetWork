@@ -5,6 +5,7 @@ defmodule Getwork.Candidates.Candidate do
 
   alias Getwork.Users.User
   alias Getwork.Addresses.Address
+  alias Getwork.WorkExperiences.WorkExperience
 
   @primary_key {:id, Ecto.UUID, autogenerate: true}
   @required_fields [:nin, :name, :last_name]
@@ -16,6 +17,7 @@ defmodule Getwork.Candidates.Candidate do
     field :picture_url, :string
     field :link, :string
 
+    has_many :work_experiences, WorkExperience
     belongs_to :user, User
     belongs_to :address, Address
 
