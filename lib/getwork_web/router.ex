@@ -19,6 +19,7 @@ defmodule GetworkWeb.Router do
     resources "/candidates", CandidateController
     resources "/companies", CompanyController
     resources "/work-experiences", WorkExperienceController
+    resources "/educations", EducationController
   end
 
   # Enables LiveDashboard only for development
