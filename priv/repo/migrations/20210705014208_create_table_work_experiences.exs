@@ -10,7 +10,7 @@ defmodule Getwork.Repo.Migrations.CreateTableWorkExperiences do
       add :company_or_project, :string, size: 200, null: false
       add :type, Enums.WorkExperienceType.type()
       add :job_position, :string, size: 100, null: false
-      add :current_job, :boolean, default: false, null:false
+      add :current_job, :boolean, default: false, null: false
       add :start_date, :date, null: false
       add :end_date, :date
       add :description, :text, null: false
