@@ -4,8 +4,9 @@ defmodule Getwork.Candidates.Candidate do
   import Ecto.Changeset
 
   alias Getwork.Users.User
-  alias Getwork.Addresses.Address
   alias Getwork.WorkExperiences.WorkExperience
+  alias Getwork.Addresses.Address
+  alias Getwork.PhoneNumbers.PhoneNumber
 
   @primary_key {:id, Ecto.UUID, autogenerate: true}
   @required_fields [:nin, :name, :last_name]
@@ -16,6 +17,10 @@ defmodule Getwork.Candidates.Candidate do
     field :last_name, :string
     field :picture_url, :string
     field :link, :string
+
+    many_to_many :phones, PhoneNumber,
+      join_through: "candidate_phones",
+      join_keys: [candidate_id: :id, phone_number: :phone]
 
     has_many :work_experiences, WorkExperience
     belongs_to :user, User
