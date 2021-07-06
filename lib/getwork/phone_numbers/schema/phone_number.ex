@@ -1,7 +1,10 @@
 defmodule Getwork.PhoneNumbers.PhoneNumber do
   use Ecto.Schema
+
   import Ecto.Changeset
+
   alias Getwork.Candidates.Candidate
+  alias Getwork.Companies.Company
 
   @primary_key {:phone, :string, []}
   @derive {Phoenix.Param, key: :phone}
@@ -10,6 +13,10 @@ defmodule Getwork.PhoneNumbers.PhoneNumber do
     many_to_many :candidates, Candidate,
       join_through: "candidate_phones",
       join_keys: [phone_number: :phone, candidate_id: :id]
+
+    many_to_many :companies, Company,
+      join_through: "company_phones",
+      join_keys: [phone_number: :phone, company_id: :id]
 
     timestamps()
   end

@@ -4,6 +4,7 @@ defmodule Getwork.Companies.Company do
   import Ecto.Changeset
 
   alias Getwork.Addresses.Address
+  alias Getwork.PhoneNumbers.PhoneNumber
   alias Getwork.Users.User
 
   @required_fields [:ein, :name, :trade_name]
@@ -15,6 +16,10 @@ defmodule Getwork.Companies.Company do
     field :name, :string
     field :picture_ul, :string
     field :trade_name, :string
+
+    many_to_many :phones, PhoneNumber,
+      join_through: "company_phones",
+      join_keys: [company_id: :id, phone_number: :phone]
 
     belongs_to :address, Address
     belongs_to :user, User
