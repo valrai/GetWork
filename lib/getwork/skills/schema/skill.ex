@@ -1,11 +1,16 @@
 defmodule Getwork.Skills.Skill do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Getwork.JobOffers.JobOffer
 
   @primary_key {:name, :string, []}
   @derive {Phoenix.Param, key: :name}
 
   schema "skills" do
+    many_to_many :jobs, JobOffer,
+      join_through: "job_skills",
+      join_keys: [skill: :name, job_offer_id: :id]
+
     timestamps()
   end
 

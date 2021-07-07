@@ -6,6 +6,7 @@ defmodule Getwork.JobOffers.JobOffer do
   alias Getwork.Companies.Company
   alias Getwork.Candidates.Candidate
   alias Getwork.Tags.Tag
+  alias Getwork.Skills.Skill
 
   @required_fields [
     :title,
@@ -27,6 +28,11 @@ defmodule Getwork.JobOffers.JobOffer do
 
     many_to_many :candidates, Candidate, join_through: "applications"
     many_to_many :tags, Tag, join_through: "job_tags", join_keys: [job_offer_id: :id, tag: :name]
+
+    many_to_many :skills, Skill,
+      join_through: "job_skills",
+      join_keys: [job_offer_id: :id, skill: :name]
+
     belongs_to :company, Company
 
     timestamps()
