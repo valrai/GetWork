@@ -7,6 +7,7 @@ defmodule Getwork.Candidates.Candidate do
   alias Getwork.WorkExperiences.WorkExperience
   alias Getwork.Addresses.Address
   alias Getwork.PhoneNumbers.PhoneNumber
+  alias Getwork.JobOffers.JobOffer
 
   @primary_key {:id, Ecto.UUID, autogenerate: true}
   @required_fields [:nin, :name, :last_name]
@@ -17,6 +18,8 @@ defmodule Getwork.Candidates.Candidate do
     field :last_name, :string
     field :picture_url, :string
     field :link, :string
+
+    many_to_many :applications, JobOffer, join_through: "applications"
 
     many_to_many :phones, PhoneNumber,
       join_through: "candidate_phones",

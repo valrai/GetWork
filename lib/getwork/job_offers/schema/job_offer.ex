@@ -1,7 +1,10 @@
 defmodule Getwork.JobOffers.JobOffer do
   use Ecto.Schema
+
   import Ecto.Changeset
+
   alias Getwork.Companies.Company
+  alias Getwork.Candidates.Candidate
 
   @required_fields [
     :title,
@@ -21,6 +24,7 @@ defmodule Getwork.JobOffers.JobOffer do
     field :start_date, :date
     field :title, :string
 
+    many_to_many :candidates, Candidate, join_through: "applications"
     belongs_to :company, Company
 
     timestamps()
