@@ -3,7 +3,7 @@ defmodule Getwork.Repo.Migrations.CreateTableClaims do
 
   def change do
     create table :claims, primary_key: false do
-      add :name, :string, primary_key: true
+      add :name, :string, size: 100, primary_key: true
 
       timestamps()
     end

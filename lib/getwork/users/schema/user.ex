@@ -5,6 +5,8 @@ defmodule Getwork.Users.User do
   import Bcrypt, only: [hash_pwd_salt: 1]
 
   alias Getwork.Candidates.Candidate
+  alias Getwork.Companies.Company
+  alias Getwork.Roles.Role
 
   @required_fields [:email, :username, :is_active, :password_hash]
   @primary_key {:id, Ecto.UUID, autogenerate: true}
@@ -17,7 +19,12 @@ defmodule Getwork.Users.User do
     field :suspension_end_date, :naive_datetime
     field :username, :string
 
+    many_to_many :roles, Role,
+      join_through: "user_roles",
+      join_keys: [user_id: :id, role: :name]
+
     has_one :candidate, Candidate
+    has_one :company, Company
 
     timestamps()
   end
@@ -26,6 +33,7 @@ defmodule Getwork.Users.User do
   def changeset(user, attrs) do
     user
     |> cast(attrs, [:suspension_end_date, :password] ++ @required_fields)
+    |> maybe_put_roles(attrs)
     |> validate()
   end
 
@@ -36,6 +44,7 @@ defmodule Getwork.Users.User do
     |> validate_format(:email, ~r/^[A-Za-z0-9._-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)
     |> validate_length(:email, max: 200)
     |> validate_length(:password, min: 6)
+    |> validate_length(:username, max: 50)
     |> unique_constraint(:email)
     |> unique_constraint(:username)
   end
@@ -47,6 +56,15 @@ defmodule Getwork.Users.User do
 
       _ ->
         changeset
+    end
+  end
+
+  defp maybe_put_roles(changeset, attrs) do
+    field_name = if Map.has_key?(attrs, :roles), do: :roles, else: "roles"
+
+    case Map.get(attrs, field_name) do
+      nil -> changeset
+      roles -> put_assoc(changeset, :roles, roles)
     end
   end
 end

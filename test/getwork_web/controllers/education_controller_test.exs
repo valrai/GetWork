@@ -1,8 +1,8 @@
 defmodule GetworkWeb.EducationControllerTest do
   use GetworkWeb.ConnCase
 
-  alias Getwork.Educations
-  alias Getwork.Educations.Education
+  alias Getwork.Qualifications
+  alias Getwork.Qualifications.Education
 
   @create_attrs %{
     city: "some city",
@@ -20,10 +20,17 @@ defmodule GetworkWeb.EducationControllerTest do
     start_date: ~D[2011-05-18],
     type: "some updated type"
   }
-  @invalid_attrs %{city: nil, end_date: nil, institution: nil, its_currently_attending: nil, start_date: nil, type: nil}
+  @invalid_attrs %{
+    city: nil,
+    end_date: nil,
+    institution: nil,
+    its_currently_attending: nil,
+    start_date: nil,
+    type: nil
+  }
 
   def fixture(:education) do
-    {:ok, education} = Educations.create_education(@create_attrs)
+    {:ok, education} = Qualifications.create_education(@create_attrs)
     education
   end
 
@@ -32,7 +39,7 @@ defmodule GetworkWeb.EducationControllerTest do
   end
 
   describe "index" do
-    test "lists all educations", %{conn: conn} do
+    test "lists all qualifications", %{conn: conn} do
       conn = get(conn, Routes.education_path(conn, :index))
       assert json_response(conn, 200)["data"] == []
     end
@@ -65,7 +72,10 @@ defmodule GetworkWeb.EducationControllerTest do
   describe "update education" do
     setup [:create_education]
 
-    test "renders education when data is valid", %{conn: conn, education: %Education{id: id} = education} do
+    test "renders education when data is valid", %{
+      conn: conn,
+      education: %Education{id: id} = education
+    } do
       conn = put(conn, Routes.education_path(conn, :update, education), education: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 

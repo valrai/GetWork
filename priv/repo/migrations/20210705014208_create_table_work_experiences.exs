@@ -8,7 +8,7 @@ defmodule Getwork.Repo.Migrations.CreateTableWorkExperiences do
     create table :work_experiences, primary_key: false do
       add :id, :uuid, primary_key: true
       add :company_or_project, :string, size: 200, null: false
-      add :type, Enums.WorkExperienceType.type()
+      add :type, Enums.WorkExperienceType.type(), null: false
       add :job_position, :string, size: 100, null: false
       add :current_job, :boolean, default: false, null: false
       add :start_date, :date, null: false

@@ -32,7 +32,7 @@ defmodule Getwork.WorkExperiences.WorkExperience do
   @doc false
   def changeset(work_experience, attrs) do
     work_experience
-    |> cast(attrs, [:end_date | @required_fields])
+    |> cast(attrs, [:end_date, :candidate_id] ++ @required_fields)
     |> validate()
   end
 

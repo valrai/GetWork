@@ -1,11 +1,16 @@
 defmodule Getwork.Claims.Claim do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Getwork.Roles.Role
 
   @primary_key {:name, :string, []}
   @derive {Phoenix.Param, key: :name}
 
   schema "claims" do
+    many_to_many :roles, Role,
+      join_through: "role_claims",
+      join_keys: [claim: :name, role: :name]
+
     timestamps()
   end
 

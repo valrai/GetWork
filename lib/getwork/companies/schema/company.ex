@@ -30,7 +30,8 @@ defmodule Getwork.Companies.Company do
   @doc false
   def changeset(company, attrs) do
     company
-    |> cast(attrs, [:link, :picture_ul] ++ @required_fields)
+    |> cast(attrs, @required_fields ++ [:link, :picture_ul, :user_id, :address_id])
+    |> maybe_put_phones(attrs)
     |> validate()
   end
 
@@ -43,5 +44,14 @@ defmodule Getwork.Companies.Company do
     |> validate_length(:trade_name, max: 100)
     |> foreign_key_constraint(:address_id)
     |> foreign_key_constraint(:user_id)
+  end
+
+  defp maybe_put_phones(changeset, attrs) do
+    field_name = if Map.has_key?(attrs, :phones), do: :phones, else: "phones"
+
+    case Map.get(attrs, field_name) do
+      nil -> changeset
+      phones -> put_assoc(changeset, :phones, phones)
+    end
   end
 end

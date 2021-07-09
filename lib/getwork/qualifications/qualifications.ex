@@ -1,23 +1,23 @@
-defmodule Getwork.Educations do
+defmodule Getwork.Qualifications do
   @moduledoc """
-  The Educations context.
+  The Qualifications context.
   """
 
   import Ecto.Query, warn: false
 
   alias Getwork.Repo
-  alias Getwork.Educations.Education
+  alias Getwork.Qualifications.Education
 
   @doc """
-  Returns the list of educations.
+  Returns the list of qualifications.
 
   ## Examples
 
-      iex> list_educations()
+      iex> list_qualifications()
       [%Education{}, ...]
 
   """
-  def list_educations do
+  def list_qualifications do
     Repo.all(Education)
   end
 

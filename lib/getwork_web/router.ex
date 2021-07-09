@@ -19,7 +19,7 @@ defmodule GetworkWeb.Router do
     resources "/candidates", CandidateController
     resources "/companies", CompanyController
     resources "/work-experiences", WorkExperienceController
-    resources "/educations", EducationController
+    resources "/education", EducationController
     resources "/job-offers", JobOfferController
   end
 

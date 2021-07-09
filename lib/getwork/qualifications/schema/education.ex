@@ -1,4 +1,4 @@
-defmodule Getwork.Educations.Education do
+defmodule Getwork.Qualifications.Education do
   use Ecto.Schema
 
   import Ecto.Changeset
@@ -9,7 +9,7 @@ defmodule Getwork.Educations.Education do
   @required_fields [:type, :institution, :city, :its_currently_attending, :start_date]
   @primary_key {:id, Ecto.UUID, autogenerate: true}
 
-  schema "educations" do
+  schema "education" do
     field :city, :string
     field :end_date, :date
     field :institution, :string
@@ -25,7 +25,7 @@ defmodule Getwork.Educations.Education do
   @doc false
   def changeset(education, attrs) do
     education
-    |> cast(attrs, [:end_date | @required_fields])
+    |> cast(attrs, [:end_date, :candidate_id] ++ @required_fields)
     |> validate()
   end
 

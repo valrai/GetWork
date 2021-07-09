@@ -41,13 +41,13 @@ defmodule Getwork.JobOffers.JobOffer do
   @doc false
   def changeset(job_offer, attrs) do
     job_offer
-    |> cast(attrs, @required_fields)
+    |> cast(attrs, [:company_id | @required_fields])
     |> validate()
   end
 
   def validate(changeset) do
     changeset
     |> validate_required(@required_fields)
-    |> validate_length(:title, max: 200)
+    |> validate_length(:title, max: 100)
   end
 end
