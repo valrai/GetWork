@@ -1,8 +1,13 @@
 defmodule GetworkWeb.Router do
   use GetworkWeb, :router
+  alias GetworkWeb.Auth.BasicAuthPlug
 
   pipeline :api do
     plug :accepts, ["json"]
+  end
+
+  pipeline :basic_auth_login do
+    plug BasicAuthPlug
   end
 
   scope "/api", GetworkWeb do
