@@ -55,3 +55,14 @@ config :phoenix, :stacktrace_depth, 20
 
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Swagger
+config :phoenix_swagger, json_library: Jason
+
+config :getwork, :phoenix_swagger,
+  swagger_files: %{
+    "priv/static/swagger.yml" => [
+      router: GetworkWeb.Router,
+      endpoint: GetworkWeb.Endpoint
+    ]
+  }

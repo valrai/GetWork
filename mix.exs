@@ -45,6 +45,8 @@ defmodule Getwork.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:bcrypt_elixir, "~> 2.3"},
       {:ecto_enum, "~> 1.4"},
+      {:phoenix_swagger, "~> 0.8"},
+      {:ex_json_schema, "~> 0.5"},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end

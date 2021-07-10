@@ -1,0 +1,22 @@
+consumes:
+  - application/json
+basePath: "/api"
+info:
+  description: Documentation - GetWork API
+  title: GetWork API
+  version: '1.0'
+produces:
+  - application/json
+schemes:
+  - http
+  - https
+swagger: '2.0'
+definitions:
+  Language:
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+      - name
+paths:
