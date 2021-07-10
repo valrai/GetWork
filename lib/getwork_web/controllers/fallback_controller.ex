@@ -9,7 +9,7 @@ defmodule GetworkWeb.FallbackController do
   def call(conn, {:error, %Ecto.Changeset{} = changeset}) do
     conn
     |> put_status(:unprocessable_entity)
-    |> put_view(ApiWeb.ChangesetView)
+    |> put_view(GetworkWeb.ChangesetView)
     |> render("error.json", changeset: changeset)
   end
 
@@ -21,7 +21,7 @@ defmodule GetworkWeb.FallbackController do
 
     conn
     |> put_status(status_code)
-    |> put_view(ApiWeb.ErrorView)
+    |> put_view(GetworkWeb.ErrorView)
     |> render(atom_status, %{message: message})
   end
 

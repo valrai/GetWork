@@ -3,7 +3,8 @@ defmodule Getwork.Repo.Migrations.CreateTableRoles do
 
   def change do
     create table :roles, primary_key: false do
-      add :name, :string, size: 100, primary_key: true
+      add :id, :uuid, primary_key: true
+      add :name, :string, size: 100, null: false
 
       timestamps()
     end

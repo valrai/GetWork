@@ -3,7 +3,8 @@ defmodule Getwork.Repo.Migrations.CreateTableTags do
 
   def change do
     create table :tags, primary_key: false  do
-      add :name, :string, primary_key: true, size: 50
+      add :id, :uuid, primary_key: true
+      add :name, :string,  size: 50, null: false
 
       timestamps()
     end

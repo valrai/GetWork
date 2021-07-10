@@ -5,7 +5,8 @@ defmodule Getwork.Repo.Migrations.CreateTableQualifications do
   def change do
     Enums.EducationLevel.create_type()
 
-    create table :education do
+    create table :education, primary_key: false do
+      add :id, :uuid, primary_key: true
       add :type, Enums.EducationLevel.type(), null: false
       add :institution, :string, size: 200, null: false
       add :city, :string, size: 200, null: false

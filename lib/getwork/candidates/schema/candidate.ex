@@ -13,8 +13,8 @@ defmodule Getwork.Candidates.Candidate do
   alias Getwork.Qualifications.Education
   alias Getwork.Skills.Skill
 
-  @primary_key {:id, Ecto.UUID, autogenerate: true}
   @required_fields [:nin, :name, :last_name]
+  @primary_key {:id, Ecto.UUID, autogenerate: true}
 
   schema "candidates" do
     field :nin, :string
@@ -23,20 +23,10 @@ defmodule Getwork.Candidates.Candidate do
     field :picture_url, :string
     field :link, :string
 
-    many_to_many :phones, PhoneNumber,
-      join_through: "candidate_phones",
-      join_keys: [candidate_id: :id, phone_number: :phone]
-
-    many_to_many :languages, Language,
-      join_through: "candidate_languages",
-      join_keys: [candidate_id: :id, language: :name]
-
-    many_to_many :skills, Skill,
-      join_through: "candidate_skills",
-      join_keys: [candidate_id: :id, skill: :name]
-
+    many_to_many :phones, PhoneNumber, join_through: "candidate_phones"
+    many_to_many :languages, Language, join_through: "candidate_languages"
+    many_to_many :skills, Skill, join_through: "candidate_skills"
     many_to_many :applications, JobOffer, join_through: "applications"
-
     has_many :work_experiences, WorkExperience
     has_many :education, Education
     belongs_to :user, User
@@ -50,7 +40,7 @@ defmodule Getwork.Candidates.Candidate do
     candidate
     |> cast(attrs, @required_fields ++ [:link, :picture_url, :user_id, :address_id])
     |> cast_assoc(:work_experiences, &WorkExperience.changeset/2)
-    |> maybe_put_education(attrs)
+    |> cast_assoc(:education, &Education.changeset/2)
     |> maybe_put_languages(attrs)
     |> maybe_put_phones(attrs)
     |> maybe_put_skills(attrs)
@@ -66,15 +56,6 @@ defmodule Getwork.Candidates.Candidate do
     |> validate_required(@required_fields)
     |> foreign_key_constraint(:address_id)
     |> foreign_key_constraint(:user_id)
-  end
-
-  defp maybe_put_education(changeset, attrs) do
-    field_name = if Map.has_key?(attrs, :education), do: :education, else: "education"
-
-    case Map.get(attrs, field_name) do
-      nil -> changeset
-      education -> put_assoc(changeset, :education, education)
-    end
   end
 
   defp maybe_put_languages(changeset, attrs) do

@@ -6,17 +6,13 @@ defmodule Getwork.PhoneNumbers.PhoneNumber do
   alias Getwork.Candidates.Candidate
   alias Getwork.Companies.Company
 
-  @primary_key {:phone, :string, []}
-  @derive {Phoenix.Param, key: :phone}
+  @primary_key {:id, Ecto.UUID, autogenerate: true}
 
   schema "phone_numbers" do
-    many_to_many :candidates, Candidate,
-      join_through: "candidate_phones",
-      join_keys: [phone_number: :phone, candidate_id: :id]
+    field :name, :string
 
-    many_to_many :companies, Company,
-      join_through: "company_phones",
-      join_keys: [phone_number: :phone, company_id: :id]
+    many_to_many :candidates, Candidate, join_through: "candidate_phones"
+    many_to_many :companies, Company, join_through: "company_phones"
 
     timestamps()
   end

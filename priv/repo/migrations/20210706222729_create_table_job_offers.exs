@@ -2,7 +2,7 @@ defmodule Getwork.Repo.Migrations.CreateTableJobOffers do
   use Ecto.Migration
 
   def change do
-    create table :job_offers , primary_key: false do
+    create table :job_offers, primary_key: false do
       add :id, :uuid, primary_key: true
       add :title, :string, size: 100, null: false
       add :description, :text, null: false

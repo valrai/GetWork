@@ -3,15 +3,12 @@ defmodule Getwork.Languages.Language do
   import Ecto.Changeset
   alias Getwork.Candidates.Candidate
 
-  @primary_key {:name, :string, []}
-  @derive {Phoenix.Param, key: :name}
-
   schema "languages" do
+    field :name, :string
+
     timestamps()
 
-    many_to_many :candidates, Candidate,
-      join_through: "candidate_languages",
-      join_keys: [language: :name, candidate_id: :id]
+    many_to_many :candidates, Candidate, join_through: "candidate_languages"
   end
 
   @doc false

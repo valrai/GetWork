@@ -19,9 +19,7 @@ defmodule Getwork.Users.User do
     field :suspension_end_date, :naive_datetime
     field :username, :string
 
-    many_to_many :roles, Role,
-      join_through: "user_roles",
-      join_keys: [user_id: :id, role: :name]
+    many_to_many :roles, Role, join_through: "user_roles"
 
     has_one :candidate, Candidate
     has_one :company, Company
