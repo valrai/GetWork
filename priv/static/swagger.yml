@@ -20,3 +20,124 @@ definitions:
     required:
       - name
 paths:
+  # Languages
+  /languages:
+    post:
+      summary: Create a new language
+      description: Create a new language
+      operationId: create
+      parameters:
+        - in: body
+          name: language
+          description: data of the new language
+          schema:
+            $ref: '#/definitions/Language'
+      responses:
+        '201':
+          description: Created
+          examples:
+            application/json: {
+              "data": {
+                "name": "English"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "name": [
+                  "can't be blank"
+                ]
+              }
+            }
+      tags:
+        - Languages
+    get:
+      summary: List all languages
+      description: List all languages
+      operationId: index
+      responses:
+        '200':
+          description: Sucesso
+          examples:
+            application/json: {
+              "data": [
+                {
+                  "id": "c6637477-a98e-4314-89a3-38c5dcf5e99c",
+                  "name": "English",
+                },
+                {
+                  "id": "b938351f-a403-4eb2-86b5-8f1a7995d168",
+                  "name": "Brazilian Portuguese",
+                }
+              ]
+            }
+      tags:
+      - Languages
+  /languages/{id}:
+    put:
+      summary: Updates a language
+      description: Updates a language
+      operationId: update
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the language to update
+        - in: body
+          name: language
+          description: Language update data
+          schema:
+            $ref: '#/definitions/Language'
+      responses:
+        '200':
+          description: Success
+          examples:
+            application/json: {
+              "name": "English"
+            }
+        '404':
+          description: Resource not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "name": [
+                  "can't be blank"
+                ]
+              }
+            }
+      tags:
+        - Languages
+    delete:
+      summary: Deletes a language
+      description: Deletes a language
+      operationId: delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the language to delete
+      responses:
+        '204':
+          description: Success
+        '404':
+          description: Resource not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+      tags:
+        - Languages

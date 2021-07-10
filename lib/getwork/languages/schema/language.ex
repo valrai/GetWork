@@ -3,6 +3,8 @@ defmodule Getwork.Languages.Language do
   import Ecto.Changeset
   alias Getwork.Candidates.Candidate
 
+  @primary_key {:id, Ecto.UUID, autogenerate: true}
+
   schema "languages" do
     field :name, :string
 

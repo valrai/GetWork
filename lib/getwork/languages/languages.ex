@@ -4,8 +4,8 @@ defmodule Getwork.Languages do
   """
 
   import Ecto.Query, warn: false
-  alias Getwork.Repo
 
+  alias Getwork.Repo
   alias Getwork.Languages.Language
 
   @doc """
@@ -18,34 +18,19 @@ defmodule Getwork.Languages do
 
   """
   def list_languages do
-    Repo.all(Language)
+    languages = Repo.all(Language)
+    {:ok, languages}
   end
-
-  @doc """
-  Gets a single language.
-
-  Raises `Ecto.NoResultsError` if the Language does not exist.
-
-  ## Examples
-
-      iex> get_language!(123)
-      %Language{}
-
-      iex> get_language!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_language!(id), do: Repo.get!(Language, id)
 
   @doc """
   Creates a language.
 
   ## Examples
 
-      iex> create_language(%{field: value})
-      {:ok, %Language{}}
+      iex> create_language(%{name: "new language"})
+      {:ok, %Getwork.Languages.Language{}}
 
-      iex> create_language(%{field: bad_value})
+      iex> create_language(%{name: nil})
       {:error, %Ecto.Changeset{}}
 
   """
@@ -60,11 +45,20 @@ defmodule Getwork.Languages do
 
   ## Examples
 
-      iex> update_language(language, %{field: new_value})
-      {:ok, %Language{}}
+      iex> update_language(%Language{}, %{name: "new language"})
+      {:ok, %Getwork.Languages.Language{}}
 
-      iex> update_language(language, %{field: bad_value})
+      iex> update_language(%Language{}, %{name: nil})
       {:error, %Ecto.Changeset{}}
+
+      iex> update_language("c19763df-42ef-463b-9e78-86355f9d3673", %{name: "new language"})
+      {:ok, %Getwork.Languages.Language{}}
+
+      iex> update_language("c19763df-42ef-463b-9e78-86355f9d3673", %{name: nil})
+      {:error, %Ecto.Changeset{}}
+
+      iex> update_language("d2642c20-ec14-408d-9324-7fd4e76ffcc1", %{"name" => "new language"})
+      {:error, 404, "resource not found"}
 
   """
   def update_language(%Language{} = language, attrs) do
@@ -73,32 +67,44 @@ defmodule Getwork.Languages do
     |> Repo.update()
   end
 
+  def update_language(id, attrs) do
+    Language
+    |> Repo.get(id)
+    |> case do
+      nil -> {:error, 404, "resource not found"}
+      language -> update_language(language, attrs)
+    end
+  end
+
   @doc """
   Deletes a language.
 
   ## Examples
 
-      iex> delete_language(language)
-      {:ok, %Language{}}
+      iex> delete_language(%Language{})
+      {:ok, %Getwork.Languages.Language{}}
 
-      iex> delete_language(language)
+      iex> delete_language(%Language{})
       {:error, %Ecto.Changeset{}}
 
-  """
-  def delete_language(%Language{} = language) do
-    Repo.delete(language)
-  end
+      iex> delete_language("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:ok, %Getwork.Languages.Language{}}
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking language changes.
+      iex> delete_language("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:error, %Ecto.Changeset{}}
 
-  ## Examples
-
-      iex> change_language(language)
-      %Ecto.Changeset{data: %Language{}}
+      iex> delete_language("d2642c20-ec14-408d-9324-7fd4e76ffcc1")
+      {:error, 404, "resource not found"}
 
   """
-  def change_language(%Language{} = language, attrs \\ %{}) do
-    Language.changeset(language, attrs)
+  def delete_language(%Language{} = language), do: Repo.delete(language)
+
+  def delete_language(id) do
+    Language
+    |> Repo.get(id)
+    |> case do
+      nil -> {:error, 404, "resource not found"}
+      language -> delete_language(language)
+    end
   end
 end

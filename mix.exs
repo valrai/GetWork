@@ -47,6 +47,7 @@ defmodule Getwork.MixProject do
       {:ecto_enum, "~> 1.4"},
       {:phoenix_swagger, "~> 0.8"},
       {:ex_json_schema, "~> 0.5"},
+      {:faker, "~> 0.16", only: :test, runtime: false},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end

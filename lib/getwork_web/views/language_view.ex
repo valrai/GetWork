@@ -11,7 +11,6 @@ defmodule GetworkWeb.LanguageView do
   end
 
   def render("language.json", %{language: language}) do
-    %{id: language.id,
-      name: language.name}
+    %{id: language.id, name: language.name}
   end
 end
