@@ -33,6 +33,13 @@ definitions:
         type: string
     required:
       - name
+  Claim:
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+      - name
 paths:
   # Languages
   /languages:
@@ -397,3 +404,124 @@ paths:
             }
       tags:
         - Skills
+  # Claims
+  /claims:
+    post:
+      summary: Create a new claim
+      description: Create a new claim
+      operationId: create
+      parameters:
+        - in: body
+          name: claim
+          description: data of the new claim
+          schema:
+            $ref: '#/definitions/Claim'
+      responses:
+        '201':
+          description: Created
+          examples:
+            application/json: {
+              "data": {
+                "name": "create_claim"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "name": [
+                  "can't be blank"
+                ]
+              }
+            }
+      tags:
+        - Claims
+    get:
+      summary: List all claims
+      description: List all claims
+      operationId: index
+      responses:
+        '200':
+          description: Sucesss
+          examples:
+            application/json: {
+              "data": [
+                {
+                  "id": "c6637477-a98e-4314-89a3-38c5dcf5e99c",
+                  "name": "create_claims",
+                },
+                {
+                  "id": "b938351f-a403-4eb2-86b5-8f1a7995d168",
+                  "name": "delete_claims",
+                }
+              ]
+            }
+      tags:
+      - Claims
+  /claims/{id}:
+    put:
+      summary: Updates a claim
+      description: Updates a claim
+      operationId: update
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the claim to update
+        - in: body
+          name: claim
+          description: Claim update data
+          schema:
+            $ref: '#/definitions/Claim'
+      responses:
+        '200':
+          description: Success
+          examples:
+            application/json: {
+              "name": "update_claims"
+            }
+        '404':
+          description: Resource not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "name": [
+                  "can't be blank"
+                ]
+              }
+            }
+      tags:
+        - Claims
+    delete:
+      summary: Deletes a claim
+      description: Deletes a claim
+      operationId: delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the claim to delete
+      responses:
+        '204':
+          description: Success
+        '404':
+          description: Resource not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+      tags:
+        - Claims

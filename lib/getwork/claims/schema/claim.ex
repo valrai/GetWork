@@ -4,12 +4,12 @@ defmodule Getwork.Claims.Claim do
   alias Getwork.Roles.Role
 
   @primary_key {:name, :string, []}
-  @derive {Phoenix.Param, key: :name}
+  @primary_key {:id, Ecto.UUID, autogenerate: true}
 
   schema "claims" do
-    many_to_many :roles, Role,
-      join_through: "role_claims",
-      join_keys: [claim: :name, role: :name]
+    field :name, :string
+
+    many_to_many :roles, Role, join_through: "role_claims"
 
     timestamps()
   end

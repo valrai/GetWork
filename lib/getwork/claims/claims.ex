@@ -26,51 +26,14 @@ defmodule Getwork.Claims do
   end
 
   @doc """
-  Gets a single claim.
-
-  Raises `Ecto.NoResultsError` if the Claim does not exist.
-
-  ## Examples
-
-      iex> get_claim!(123)
-      %Claim{}
-
-      iex> get_claim!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_claim!(id), do: Repo.get!(Claim, id)
-
-  @doc """
-  Gets a single claim.
-
-  ## Examples
-
-      iex> get_claim(123)
-      {:ok, %Claim{}}
-
-      iex> get_claim(456)
-      {:error, 404, "resource not found"}
-
-  """
-  def get_claim(id) do
-    Claim
-    |> Repo.get(id)
-    |> case do
-      nil -> {:error, 404, "resource not found"}
-      claim -> {:ok, claim}
-    end
-  end
-
-  @doc """
   Creates a claim.
 
   ## Examples
 
-      iex> create_claim(%{field: value})
+      iex> create_claim(%{name: "new claim"})
       {:ok, %Claim{}}
 
-      iex> create_claim(%{field: bad_value})
+      iex> create_claim(%{name: nil})
       {:error, %Ecto.Changeset{}}
 
   """
@@ -85,29 +48,35 @@ defmodule Getwork.Claims do
 
   ## Examples
 
-      iex> update_claim(%{"id" => 123, "field" => new_value})
-      {:ok, %Claim{}}
+      iex> update_claim(%Claim{}, %{name: "new claim"})
+      {:ok, %Getwork.Claims.Claim{}}
 
-      iex> update_claim(%{"id" => 123, "field" => bad_value})
+      iex> update_claim(%Claim{}, %{name: nil})
       {:error, %Ecto.Changeset{}}
 
-      iex> update_claim(%{"id" => 456, "field" => new_value})
+      iex> update_claim("c19763df-42ef-463b-9e78-86355f9d3673", %{name: "new claim"})
+      {:ok, %Getwork.Claims.Claim{}}
+
+      iex> update_claim("c19763df-42ef-463b-9e78-86355f9d3673", %{name: nil})
+      {:error, %Ecto.Changeset{}}
+
+      iex> update_claim("d2642c20-ec14-408d-9324-7fd4e76ffcc1", %{"name" => "new claim"})
       {:error, 404, "resource not found"}
 
   """
-  def update_claim(attrs) do
+  def update_claim(%Claim{} = claim, attrs) do
+    claim
+    |> Claim.changeset(attrs)
+    |> Repo.update()
+  end
+
+  def update_claim(id, attrs) do
     Claim
-    |> Repo.get(attrs["id"])
+    |> Repo.get(id)
     |> case do
       nil -> {:error, 404, "resource not found"}
       claim -> update_claim(claim, attrs)
     end
-  end
-
-  defp update_claim(%Claim{} = claim, attrs) do
-    claim
-    |> Claim.changeset(attrs)
-    |> Repo.update()
   end
 
   @doc """
@@ -115,19 +84,30 @@ defmodule Getwork.Claims do
 
   ## Examples
 
-      iex> delete_claim(123)
-      {:ok, %Claim{}}
+      iex> delete_claim(%Claim{})
+      {:ok, %Getwork.Claims.Claim{}}
 
-      iex> delete_claim(456)
+      iex> delete_claim(%Claim{})
+      {:error, %Ecto.Changeset{}}
+
+      iex> delete_claim("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:ok, %Getwork.Claims.Claim{}}
+
+      iex> delete_claim("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:error, %Ecto.Changeset{}}
+
+      iex> delete_claim("d2642c20-ec14-408d-9324-7fd4e76ffcc1")
       {:error, 404, "resource not found"}
 
   """
+  def delete_claim(%Claim{} = claim), do: Repo.delete(claim)
+
   def delete_claim(id) do
     Claim
     |> Repo.get(id)
     |> case do
       nil -> {:error, 404, "resource not found"}
-      claim -> Repo.delete(claim)
+      claim -> delete_claim(claim)
     end
   end
 end
