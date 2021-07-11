@@ -5,8 +5,6 @@ defmodule Getwork.Repo.Migrations.CreateTableUserRoles do
     create table :user_roles, primary_key: false do
       add :user_id, references(:users, type: :uuid), primary_key: true
       add :role_id, references(:roles, type: :uuid), primary_key: true
-
-      timestamps()
     end
   end
 end
