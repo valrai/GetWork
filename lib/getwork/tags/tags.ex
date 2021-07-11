@@ -4,8 +4,8 @@ defmodule Getwork.Tags do
   """
 
   import Ecto.Query, warn: false
-  alias Getwork.Repo
 
+  alias Getwork.Repo
   alias Getwork.Tags.Tag
 
   @doc """
@@ -14,38 +14,23 @@ defmodule Getwork.Tags do
   ## Examples
 
       iex> list_tags()
-      [%Tag{}, ...]
+      {:ok, [%Tag{}, ...]}
 
   """
   def list_tags do
-    Repo.all(Tag)
+    tags = Repo.all(Tag)
+    {:ok, tags}
   end
-
-  @doc """
-  Gets a single tag.
-
-  Raises `Ecto.NoResultsError` if the Tag does not exist.
-
-  ## Examples
-
-      iex> get_tag!(123)
-      %Tag{}
-
-      iex> get_tag!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_tag!(id), do: Repo.get!(Tag, id)
 
   @doc """
   Creates a tag.
 
   ## Examples
 
-      iex> create_tag(%{field: value})
-      {:ok, %Tag{}}
+      iex> create_tag(%{name: "new tag"})
+      {:ok, %Getwork.Tags.%Tag{}}
 
-      iex> create_tag(%{field: bad_value})
+      iex> create_tag(%{name: ni})
       {:error, %Ecto.Changeset{}}
 
   """
@@ -60,11 +45,20 @@ defmodule Getwork.Tags do
 
   ## Examples
 
-      iex> update_tag(tag, %{field: new_value})
-      {:ok, %Tag{}}
+      iex> update_tag(tag, %{name: "new tag"})
+      {:ok, %Getwork.Tags.%Tag{}}
 
-      iex> update_tag(tag, %{field: bad_value})
+      iex> update_tag(tag, %{name: nil})
       {:error, %Ecto.Changeset{}}
+
+      iex> update_tag("c19763df-42ef-463b-9e78-86355f9d3673", %{name: "new tag"})
+      {:ok, %Getwork.Tags.%Tag{}}
+
+      iex> update_tag("c19763df-42ef-463b-9e78-86355f9d3673", %{name: nil})
+      {:error, %Ecto.Changeset{}}
+
+      iex> update_tag("d2642c20-ec14-408d-9324-7fd4e76ffcc1", %{"name" => "new tag"})
+      {:error, 404, "resource not found"}
 
   """
   def update_tag(%Tag{} = tag, attrs) do
@@ -73,32 +67,46 @@ defmodule Getwork.Tags do
     |> Repo.update()
   end
 
+  def update_tag(id, attrs) do
+    Tag
+    |> Repo.get(id)
+    |> case do
+      nil -> {:error, 404, "resource not found"}
+      tag -> update_tag(tag, attrs)
+    end
+  end
+
   @doc """
   Deletes a tag.
 
   ## Examples
 
-      iex> delete_tag(tag)
-      {:ok, %Tag{}}
+      iex> delete_tag(%Tag{})
+      {:ok, %Getwork.Tags.Tag{}}
 
-      iex> delete_tag(tag)
+      iex> delete_tag(%Tag{})
       {:error, %Ecto.Changeset{}}
+
+      iex> delete_tag("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:ok, %Getwork.Tags.Tag{}}
+
+      iex> delete_tag("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:error, %Ecto.Changeset{}}
+
+      iex> delete_tag("d2642c20-ec14-408d-9324-7fd4e76ffcc1")
+      {:error, 404, "resource not found"}
 
   """
   def delete_tag(%Tag{} = tag) do
     Repo.delete(tag)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking tag changes.
-
-  ## Examples
-
-      iex> change_tag(tag)
-      %Ecto.Changeset{data: %Tag{}}
-
-  """
-  def change_tag(%Tag{} = tag, attrs \\ %{}) do
-    Tag.changeset(tag, attrs)
+  def delete_tag(id) do
+    Tag
+    |> Repo.get(id)
+    |> case do
+      nil -> {:error, 404, "resource not found"}
+      tag -> delete_tag(tag)
+    end
   end
 end

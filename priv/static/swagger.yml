@@ -19,6 +19,13 @@ definitions:
         type: string
     required:
       - name
+  Tag:
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+      - name
 paths:
   # Languages
   /languages:
@@ -141,3 +148,124 @@ paths:
             }
       tags:
         - Languages
+  # Tags
+  /tags:
+    post:
+      summary: Create a new tag
+      description: Create a new tag
+      operationId: create
+      parameters:
+        - in: body
+          name: tag
+          description: data of the new tag
+          schema:
+            $ref: '#/definitions/Tag'
+      responses:
+        '201':
+          description: Created
+          examples:
+            application/json: {
+              "data": {
+                "name": "Elixir"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "name": [
+                  "can't be blank"
+                ]
+              }
+            }
+      tags:
+        - Tags
+    get:
+      summary: List all tags
+      description: List all tags
+      operationId: index
+      responses:
+        '200':
+          description: Sucesss
+          examples:
+            application/json: {
+              "data": [
+                {
+                  "id": "c6637477-a98e-4314-89a3-38c5dcf5e99c",
+                  "name": "Elixir",
+                },
+                {
+                  "id": "b938351f-a403-4eb2-86b5-8f1a7995d168",
+                  "name": "Phoenix",
+                }
+              ]
+            }
+      tags:
+      - Tags
+  /tags/{id}:
+    put:
+      summary: Updates a tag
+      description: Updates a tag
+      operationId: update
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the tag to update
+        - in: body
+          name: tag
+          description: Tag update data
+          schema:
+            $ref: '#/definitions/Tag'
+      responses:
+        '200':
+          description: Success
+          examples:
+            application/json: {
+              "name": "Elixir"
+            }
+        '404':
+          description: Resource not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "name": [
+                  "can't be blank"
+                ]
+              }
+            }
+      tags:
+        - Tags
+    delete:
+      summary: Deletes a tag
+      description: Deletes a tag
+      operationId: delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the tag to delete
+      responses:
+        '204':
+          description: Success
+        '404':
+          description: Resource not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+      tags:
+        - Tags

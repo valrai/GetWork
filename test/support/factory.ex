@@ -1,9 +1,14 @@
 defmodule Getwork.Factory do
   alias Getwork.Languages.Language
+  alias Getwork.Tags.Tag
   alias Getwork.Repo
 
   def build(:language) do
     %Language{name: Faker.Lorem.word()}
+  end
+
+  def build(:tag) do
+    %Tag{name: Faker.Lorem.word()}
   end
 
   # Convenience API
