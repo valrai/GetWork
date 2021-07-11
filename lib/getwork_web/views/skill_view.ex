@@ -2,8 +2,8 @@ defmodule GetworkWeb.SkillView do
   use GetworkWeb, :view
   alias GetworkWeb.SkillView
 
-  def render("index.json", %{skill: skill}) do
-    %{data: render_many(skill, SkillView, "skill.json")}
+  def render("index.json", %{skills: skills}) do
+    %{data: render_many(skills, SkillView, "skill.json")}
   end
 
   def render("show.json", %{skill: skill}) do
@@ -11,7 +11,9 @@ defmodule GetworkWeb.SkillView do
   end
 
   def render("skill.json", %{skill: skill}) do
-    %{id: skill.id,
-      name: skill.name}
+    %{
+      id: skill.id,
+      name: skill.name
+    }
   end
 end

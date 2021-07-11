@@ -4,8 +4,8 @@ defmodule Getwork.Skills do
   """
 
   import Ecto.Query, warn: false
-  alias Getwork.Repo
 
+  alias Getwork.Repo
   alias Getwork.Skills.Skill
 
   @doc """
@@ -13,39 +13,24 @@ defmodule Getwork.Skills do
 
   ## Examples
 
-      iex> list_skill()
-      [%Skill{}, ...]
+      iex> list_skills()
+      {:ok, [%Skill{}, ...]}
 
   """
-  def list_skill do
-    Repo.all(Skill)
+  def list_skills do
+    skills = Repo.all(Skill)
+    {:ok, skills}
   end
-
-  @doc """
-  Gets a single skill.
-
-  Raises `Ecto.NoResultsError` if the Skill does not exist.
-
-  ## Examples
-
-      iex> get_skill!(123)
-      %Skill{}
-
-      iex> get_skill!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_skill!(id), do: Repo.get!(Skill, id)
 
   @doc """
   Creates a skill.
 
   ## Examples
 
-      iex> create_skill(%{field: value})
+      iex> create_skill(%{name: "new skill"})
       {:ok, %Skill{}}
 
-      iex> create_skill(%{field: bad_value})
+      iex> create_skill(%{name: nil})
       {:error, %Ecto.Changeset{}}
 
   """
@@ -60,11 +45,20 @@ defmodule Getwork.Skills do
 
   ## Examples
 
-      iex> update_skill(skill, %{field: new_value})
-      {:ok, %Skill{}}
+      iex> update_skill(%Skill{}, %{name: "new skill"})
+      {:ok, %Getwork.Skills.Skill{}}
 
-      iex> update_skill(skill, %{field: bad_value})
+      iex> update_skill(%Skill{}, %{name: nil})
       {:error, %Ecto.Changeset{}}
+
+      iex> update_skill("c19763df-42ef-463b-9e78-86355f9d3673", %{name: "new skill"})
+      {:ok, %Getwork.Skills.Skill{}}
+
+      iex> update_skill("c19763df-42ef-463b-9e78-86355f9d3673", %{name: nil})
+      {:error, %Ecto.Changeset{}}
+
+      iex> update_skill("d2642c20-ec14-408d-9324-7fd4e76ffcc1", %{"name" => "new skill"})
+      {:error, 404, "resource not found"}
 
   """
   def update_skill(%Skill{} = skill, attrs) do
@@ -73,32 +67,46 @@ defmodule Getwork.Skills do
     |> Repo.update()
   end
 
+  def update_skill(id, attrs) do
+    Skill
+    |> Repo.get(id)
+    |> case do
+      nil -> {:error, 404, "resource not found"}
+      skill -> update_skill(skill, attrs)
+    end
+  end
+
   @doc """
   Deletes a skill.
 
   ## Examples
 
-      iex> delete_skill(skill)
-      {:ok, %Skill{}}
+      iex> delete_skill(%Skill{})
+      {:ok, %Getwork.Skills.Skill{}}
 
-      iex> delete_skill(skill)
+      iex> delete_skill(%Skill{})
       {:error, %Ecto.Changeset{}}
+
+      iex> delete_skill("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:ok, %Getwork.Skills.Skill{}}
+
+      iex> delete_skill("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:error, %Ecto.Changeset{}}
+
+      iex> delete_skill("d2642c20-ec14-408d-9324-7fd4e76ffcc1")
+      {:error, 404, "resource not found"}
 
   """
   def delete_skill(%Skill{} = skill) do
     Repo.delete(skill)
   end
 
-  @doc """
-  Returns an `%Ecto.Changeset{}` for tracking skill changes.
-
-  ## Examples
-
-      iex> change_skill(skill)
-      %Ecto.Changeset{data: %Skill{}}
-
-  """
-  def change_skill(%Skill{} = skill, attrs \\ %{}) do
-    Skill.changeset(skill, attrs)
+  def delete_skill(id) do
+    Skill
+    |> Repo.get(id)
+    |> case do
+      nil -> {:error, 404, "resource not found"}
+      skill -> delete_skill(skill)
+    end
   end
 end
