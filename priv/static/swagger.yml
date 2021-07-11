@@ -40,6 +40,13 @@ definitions:
         type: string
     required:
       - name
+  Role:
+    type: object
+    properties:
+      name:
+        type: string
+    required:
+      - name
 paths:
   # Languages
   /languages:
@@ -525,3 +532,124 @@ paths:
             }
       tags:
         - Claims
+  # Roles
+  /roles:
+    post:
+      summary: Create a new role
+      description: Create a new role
+      operationId: create
+      parameters:
+        - in: body
+          name: role
+          description: data of the new role
+          schema:
+            $ref: '#/definitions/Role'
+      responses:
+        '201':
+          description: Created
+          examples:
+            application/json: {
+              "data": {
+                "name": "admin"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "name": [
+                  "can't be blank"
+                ]
+              }
+            }
+      tags:
+        - Roles
+    get:
+      summary: List all roles
+      description: List all roles
+      operationId: index
+      responses:
+        '200':
+          description: Sucesss
+          examples:
+            application/json: {
+              "data": [
+                {
+                  "id": "c6637477-a98e-4314-89a3-38c5dcf5e99c",
+                  "name": "company",
+                },
+                {
+                  "id": "b938351f-a403-4eb2-86b5-8f1a7995d168",
+                  "name": "candidate",
+                }
+              ]
+            }
+      tags:
+      - Roles
+  /roles/{id}:
+    put:
+      summary: Updates a role
+      description: Updates a role
+      operationId: update
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the role to update
+        - in: body
+          name: role
+          description: Role update data
+          schema:
+            $ref: '#/definitions/Role'
+      responses:
+        '200':
+          description: Success
+          examples:
+            application/json: {
+              "name": "update_roles"
+            }
+        '404':
+          description: Resource not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "name": [
+                  "can't be blank"
+                ]
+              }
+            }
+      tags:
+        - Roles
+    delete:
+      summary: Deletes a role
+      description: Deletes a role
+      operationId: delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the role to delete
+      responses:
+        '204':
+          description: Success
+        '404':
+          description: Resource not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+      tags:
+        - Roles

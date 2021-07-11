@@ -21,44 +21,8 @@ defmodule Getwork.Roles do
 
   """
   def list_roles do
-    Repo.all(Role)
-  end
-
-  @doc """
-  Gets a single role.
-
-  Raises `Ecto.NoResultsError` if the Role does not exist.
-
-  ## Examples
-
-      iex> get_role!(123)
-      %Role{}
-
-      iex> get_role!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_role!(id), do: Repo.get!(Role, id)
-
-  @doc """
-  Gets a single role.
-
-  ## Examples
-
-      iex> get_role(123)
-      {:ok, %Role{}}
-
-      iex> get_role(456)
-      {:error, 404, "resource not found"}
-
-  """
-  def get_role(id) do
-    Role
-    |> Repo.get(id)
-    |> case do
-      nil -> {:error, 404, "resource not found"}
-      role -> {:ok, role}
-    end
+    roles = Repo.all(Role)
+    {:ok, roles}
   end
 
   @doc """
@@ -66,10 +30,10 @@ defmodule Getwork.Roles do
 
   ## Examples
 
-      iex> create_role(%{field: value})
+      iex> create_role(%{name: "new role"})
       {:ok, %Role{}}
 
-      iex> create_role(%{field: bad_value})
+      iex> create_role(%{name: nil})
       {:error, %Ecto.Changeset{}}
 
   """
@@ -84,13 +48,19 @@ defmodule Getwork.Roles do
 
   ## Examples
 
-      iex> update_role(%{"id" => 123, "field" => new_value})
-      {:ok, %Role{}}
+      iex> update_role(%Role{}, %{name: "new role"})
+      {:ok, %Getwork.Roles.Role{}}
 
-      iex> update_role(%{"id" => 123, "field" => bad_value})
+      iex> update_role(%Role{}, %{name: nil})
       {:error, %Ecto.Changeset{}}
 
-      iex> update_role(%{"id" => 465, "field" => new_value})
+      iex> update_role("c19763df-42ef-463b-9e78-86355f9d3673", %{name: "new role"})
+      {:ok, %Getwork.Roles.Role{}}
+
+      iex> update_role("c19763df-42ef-463b-9e78-86355f9d3673", %{name: nil})
+      {:error, %Ecto.Changeset{}}
+
+      iex> update_role("d2642c20-ec14-408d-9324-7fd4e76ffcc1", %{"name" => "new role"})
       {:error, 404, "resource not found"}
 
   """
@@ -100,9 +70,9 @@ defmodule Getwork.Roles do
     |> Repo.update()
   end
 
-  def update_role(attrs) do
+  def update_role(id, attrs) do
     Role
-    |> Repo.get(attrs["id"])
+    |> Repo.get(id)
     |> case do
       nil -> {:error, 404, "resource not found"}
       role -> update_role(role, attrs)
@@ -114,22 +84,30 @@ defmodule Getwork.Roles do
 
   ## Examples
 
-      iex> delete_role(123)
-      {:ok, %Role{}}
+      iex> delete_role(%Role{})
+      {:ok, %Getwork.Roles.Role{}}
 
-      iex> delete_role(123)
+      iex> delete_role(%Role{})
       {:error, %Ecto.Changeset{}}
 
-      iex> delete_role(456)
+      iex> delete_role("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:ok, %Getwork.Roles.Role{}}
+
+      iex> delete_role("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:error, %Ecto.Changeset{}}
+
+      iex> delete_role("d2642c20-ec14-408d-9324-7fd4e76ffcc1")
       {:error, 404, "resource not found"}
 
   """
+  def delete_role(%Role{} = role), do: Repo.delete(role)
+
   def delete_role(id) do
     Role
     |> Repo.get(id)
     |> case do
       nil -> {:error, 404, "resource not found"}
-      role -> Repo.delete(role)
+      role -> delete_role(role)
     end
   end
 end
