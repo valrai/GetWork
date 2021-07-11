@@ -59,7 +59,7 @@ paths:
       operationId: index
       responses:
         '200':
-          description: Sucesso
+          description: Success
           examples:
             application/json: {
               "data": [

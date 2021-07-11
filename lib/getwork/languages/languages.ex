@@ -14,7 +14,7 @@ defmodule Getwork.Languages do
   ## Examples
 
       iex> list_languages()
-      [%Language{}, ...]
+      {:ok, [%Language{}, ...]}
 
   """
   def list_languages do
