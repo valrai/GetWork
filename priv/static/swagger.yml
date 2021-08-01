@@ -47,6 +47,19 @@ definitions:
         type: string
     required:
       - name
+  User:
+    type: object
+    properties:
+      username:
+        type: string
+      email:
+        type: string
+      password:
+        type: string
+    required:
+      - username
+      - email
+      - password
 paths:
   # Languages
   /languages:
@@ -66,6 +79,7 @@ paths:
           examples:
             application/json: {
               "data": {
+                "id": "c7588c45-1650-4c63-8050-79f3871cc659",
                 "name": "English"
               }
             }
@@ -124,10 +138,13 @@ paths:
           description: Success
           examples:
             application/json: {
-              "name": "English"
+              "data": {
+                "id": "c7588c45-1650-4c63-8050-79f3871cc659",
+                "name": "Spanish"
+              }
             }
         '404':
-          description: Resource not found
+          description: Language not found
           examples:
             application/json: {
               "errors": {
@@ -160,7 +177,7 @@ paths:
         '204':
           description: Success
         '404':
-          description: Resource not found
+          description: Language not found
           examples:
             application/json: {
               "errors": {
@@ -187,7 +204,8 @@ paths:
           examples:
             application/json: {
               "data": {
-                "name": "Elixir"
+                "id": "63c93ebf-dcc5-42c4-8806-289a7d1cd642",
+                "name": "elixir"
               }
             }
         '422':
@@ -245,10 +263,13 @@ paths:
           description: Success
           examples:
             application/json: {
-              "name": "Elixir"
+              "data": {
+                "id": "63c93ebf-dcc5-42c4-8806-289a7d1cd642",
+                "name": "phoenix"
+              }
             }
         '404':
-          description: Resource not found
+          description: Tag not found
           examples:
             application/json: {
               "errors": {
@@ -281,7 +302,7 @@ paths:
         '204':
           description: Success
         '404':
-          description: Resource not found
+          description: Tag not found
           examples:
             application/json: {
               "errors": {
@@ -308,7 +329,8 @@ paths:
           examples:
             application/json: {
               "data": {
-                "name": "Elixir"
+                "id": "4c7c9cc4-3949-40c7-9425-1230024cb0b7",
+                "name": "software development"
               }
             }
         '422':
@@ -334,12 +356,12 @@ paths:
             application/json: {
               "data": [
                 {
-                  "id": "c6637477-a98e-4314-89a3-38c5dcf5e99c",
-                  "name": "Elixir",
+                  "id": "4c7c9cc4-3949-40c7-9425-1230024cb0b7",
+                  "name": "software development"
                 },
                 {
-                  "id": "b938351f-a403-4eb2-86b5-8f1a7995d168",
-                  "name": "RESTful API",
+                  "id": "fae0b110-4ff3-4e42-8322-3622bd56624a",
+                  "name": "RESTful APIs"
                 }
               ]
             }
@@ -366,10 +388,13 @@ paths:
           description: Success
           examples:
             application/json: {
-              "name": "RESTful API"
+              "data": {
+                "id": "fae0b110-4ff3-4e42-8322-3622bd56624a",
+                "name": "UML"
+              }
             }
         '404':
-          description: Resource not found
+          description: Skill not found
           examples:
             application/json: {
               "errors": {
@@ -402,7 +427,7 @@ paths:
         '204':
           description: Success
         '404':
-          description: Resource not found
+          description: Skill not found
           examples:
             application/json: {
               "errors": {
@@ -429,7 +454,8 @@ paths:
           examples:
             application/json: {
               "data": {
-                "name": "create_claim"
+                "id": "2a378904-7567-4ac5-85a8-8bfc850dfc6a",
+                "name": "create_new_users"
               }
             }
         '422':
@@ -490,11 +516,12 @@ paths:
               "name": "update_claims"
             }
         '404':
-          description: Resource not found
+          description: Claim not found
           examples:
             application/json: {
-              "errors": {
-                "detail": "resource not found"
+              "data": {
+                "id": "2a378904-7567-4ac5-85a8-8bfc850dfc6a",
+                "name": "create_new_users"
               }
             }
         '422':
@@ -523,7 +550,7 @@ paths:
         '204':
           description: Success
         '404':
-          description: Resource not found
+          description: Claim not found
           examples:
             application/json: {
               "errors": {
@@ -550,6 +577,7 @@ paths:
           examples:
             application/json: {
               "data": {
+                "id": "ace82591-bfe3-4976-a801-81ad0cc944d8",
                 "name": "admin"
               }
             }
@@ -608,14 +636,16 @@ paths:
           description: Success
           examples:
             application/json: {
-              "name": "update_roles"
+              "id": "ace82591-bfe3-4976-a801-81ad0cc944d8",
+              "name": "candidate"
             }
         '404':
-          description: Resource not found
+          description: Role not found
           examples:
             application/json: {
-              "errors": {
-                "detail": "resource not found"
+              "data": {
+                "id": "2a378904-7567-4ac5-85a8-8bfc850dfc6a",
+                "name": "admin"
               }
             }
         '422':
@@ -644,7 +674,7 @@ paths:
         '204':
           description: Success
         '404':
-          description: Resource not found
+          description: Role not found
           examples:
             application/json: {
               "errors": {
@@ -653,3 +683,191 @@ paths:
             }
       tags:
         - Roles
+  # Users
+  /users:
+    post:
+      summary: Create a new user
+      description: Create a new user
+      operationId: create
+      parameters:
+        - in: body
+          name: user
+          description: data of the new user
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '201':
+          description: Created
+          examples:
+            application/json: {
+              "data": {
+                "email": "test@email.com",
+                "id": "01f0e0d4-5f20-4bd6-b01d-256a3197cbef",
+                "is_active": true,
+                "roles": [],
+                "suspension_end_date": null,
+                "username": "elixir_dev"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "username": [
+                  "has already been taken"
+                ]
+              }
+            }
+      tags:
+        - Users
+    get:
+      summary: List all users
+      description: List all users
+      operationId: index
+      parameters:
+        - in: query
+          name: username
+          type: string
+          description: username of the user
+        - in: query
+          name: email
+          type: string
+          description: email of the user
+        - in: query
+          name: is_active
+          type: boolean
+          description: the status of the user account
+      responses:
+        '200':
+          description: Sucesss
+          examples:
+            application/json: {
+              "data": [
+                {
+                  "email": "test@email.com",
+                  "id": "01f0e0d4-5f20-4bd6-b01d-256a3197cbef",
+                  "is_active": true,
+                  "roles": [],
+                  "suspension_end_date": null,
+                  "username": "elixir_dev"
+                },
+                {
+                  "email": "some.email@email.com",
+                  "id": "44c7e2da-8c78-4b88-9071-866836d65e8c",
+                  "is_active": true,
+                  "roles": [],
+                  "suspension_end_date": null,
+                  "username": "elixir_developer"
+                }
+              ]
+            }
+      tags:
+      - Users
+  /users/{id}:
+    get:
+      sumary: Gets a user
+      description: Gets a user
+      operationId: show
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the user to find
+      responses:
+        '200':
+          description: Success
+          examples:
+            application:/json: {
+              "data": {
+                "email": "some.email@email.com",
+                "id": "44c7e2da-8c78-4b88-9071-866836d65e8c",
+                "is_active": true,
+                "roles": [],
+                "suspension_end_date": null,
+                "username": "elixir_developer"
+              }
+            }
+        '404':
+          description: User not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+      tags:
+        - Users
+    put:
+      summary: Updates a user
+      description: Updates a user
+      operationId: update
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the user to update
+        - in: body
+          name: role
+          description: user update data
+          schema:
+            $ref: '#/definitions/User'
+      responses:
+        '200':
+          description: Success
+          examples:
+            application/json: {
+              "data": {
+                "email": "some.email@email.com",
+                "id": "44c7e2da-8c78-4b88-9071-866836d65e8c",
+                "is_active": true,
+                "roles": [],
+                "suspension_end_date": null,
+                "username": "new_username"
+              }
+            }
+        '404':
+          description: User not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+        '422':
+          description: Unprocessable Entity
+          examples:
+            application/json: {
+              "errors": {
+                "name": [
+                  "can't be blank"
+                ]
+              }
+            }
+      tags:
+        - Users
+    delete:
+      summary: Deletes a user
+      description: Deletes a user
+      operationId: delete
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the user to delete
+      responses:
+        '204':
+          description: Success
+        '404':
+          description: User not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+      tags:
+        - Users

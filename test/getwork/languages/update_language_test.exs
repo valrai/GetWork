@@ -38,7 +38,7 @@ defmodule Getwork.Languages.UpdateTest do
       assert match?({:error, %Ecto.Changeset{}}, result)
     end
 
-    test "should return a error if no language is found for the given name." do
+    test "should return a error if no language is found for the given id." do
       result = Ecto.UUID.generate() |> Languages.update_language(%{"name" => "new name"})
 
       assert match?({:error, 404, _}, result)

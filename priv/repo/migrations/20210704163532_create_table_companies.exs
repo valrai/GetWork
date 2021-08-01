@@ -8,10 +8,10 @@ defmodule Getwork.Repo.Migrations.CreateTableCompanies do
       add :name, :string, size: 100, null: false
       add :trade_name, :string, size: 200, null: false
       add :link, :string, size: 200
-      add :picture_ul, :string
+      add :picture_url, :string
 
-      add :user_id, references(:users, type: :uuid), null: false
-      add :address_id, references(:addresses, type: :uuid), null: false
+      add :user_id, references(:users, type: :uuid, on_delete: :delete_all), null: false
+      add :address_id, references(:addresses, type: :uuid, on_delete: :delete_all), null: false
 
       timestamps()
     end

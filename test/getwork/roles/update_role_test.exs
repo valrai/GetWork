@@ -12,9 +12,9 @@ defmodule Getwork.Roles.UpdateTest do
     setup do
       insert!(:role)
       insert!(:role)
-      la = insert!(:role)
+      rl = insert!(:role)
 
-      {:ok, role_id: la.id}
+      {:ok, role_id: rl.id}
     end
 
     test "should update the correct role.", %{role_id: id} do
@@ -38,7 +38,7 @@ defmodule Getwork.Roles.UpdateTest do
       assert match?({:error, %Ecto.Changeset{}}, result)
     end
 
-    test "should return a error if no role is found for the given name." do
+    test "should return a error if no role is found for the given id." do
       result = Ecto.UUID.generate() |> Roles.update_role(%{"name" => "new name"})
 
       assert match?({:error, 404, _}, result)

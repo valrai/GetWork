@@ -12,9 +12,9 @@ defmodule Getwork.Claims.UpdateTest do
     setup do
       insert!(:claim)
       insert!(:claim)
-      la = insert!(:claim)
+      cl = insert!(:claim)
 
-      {:ok, claim_id: la.id}
+      {:ok, claim_id: cl.id}
     end
 
     test "should update the correct claim.", %{claim_id: id} do
@@ -38,7 +38,7 @@ defmodule Getwork.Claims.UpdateTest do
       assert match?({:error, %Ecto.Changeset{}}, result)
     end
 
-    test "should return a error if no claim is found for the given name." do
+    test "should return a error if no claim is found for the given id." do
       result = Ecto.UUID.generate() |> Claims.update_claim(%{"name" => "new name"})
 
       assert match?({:error, 404, _}, result)

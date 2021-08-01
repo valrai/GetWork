@@ -6,9 +6,10 @@ defmodule GetworkWeb.UserController do
 
   action_fallback GetworkWeb.FallbackController
 
-  def index(conn, _params) do
-    {:ok, users} = Users.list_users()
-    render(conn, "index.json", users: users)
+  def index(conn, params) do
+    with {:ok, users} <- Users.list_users(params) do
+      render(conn, "index.json", users: users)
+    end
   end
 
   def create(conn, user_params) do
@@ -27,7 +28,7 @@ defmodule GetworkWeb.UserController do
   end
 
   def update(conn, user_params) do
-    with {:ok, %User{} = user} <- Users.update_user(user_params) do
+    with {:ok, %User{} = user} <- Users.update_user(user_params["id"], user_params) do
       render(conn, "show.json", user: user)
     end
   end

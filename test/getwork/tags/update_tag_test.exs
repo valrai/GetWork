@@ -12,9 +12,9 @@ defmodule Getwork.Tags.UpdateTest do
     setup do
       insert!(:tag)
       insert!(:tag)
-      la = insert!(:tag)
+      tg = insert!(:tag)
 
-      {:ok, tag_id: la.id}
+      {:ok, tag_id: tg.id}
     end
 
     test "should update the correct tag.", %{tag_id: id} do
@@ -38,7 +38,7 @@ defmodule Getwork.Tags.UpdateTest do
       assert match?({:error, %Ecto.Changeset{}}, result)
     end
 
-    test "should return a error if no tag is found for the given name." do
+    test "should return a error if no tag is found for the given id." do
       result = Ecto.UUID.generate() |> Tags.update_tag(%{"name" => "new name"})
 
       assert match?({:error, 404, _}, result)

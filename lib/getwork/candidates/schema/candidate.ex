@@ -29,8 +29,8 @@ defmodule Getwork.Candidates.Candidate do
     many_to_many :applications, JobOffer, join_through: "applications"
     has_many :work_experiences, WorkExperience
     has_many :education, Education
-    belongs_to :user, User
-    belongs_to :address, Address
+    belongs_to :user, User, type: Ecto.UUID
+    belongs_to :address, Address, type: Ecto.UUID
 
     timestamps()
   end

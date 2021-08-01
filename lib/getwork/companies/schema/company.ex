@@ -14,15 +14,12 @@ defmodule Getwork.Companies.Company do
     field :ein, :string
     field :link, :string
     field :name, :string
-    field :picture_ul, :string
+    field :picture_url, :string
     field :trade_name, :string
 
-    many_to_many :phones, PhoneNumber,
-      join_through: "company_phones",
-      join_keys: [company_id: :id, phone_number: :phone]
-
-    belongs_to :address, Address
-    belongs_to :user, User
+    many_to_many :phones, PhoneNumber, join_through: "company_phones"
+    belongs_to :address, Address, type: Ecto.UUID
+    belongs_to :user, User, type: Ecto.UUID
 
     timestamps()
   end

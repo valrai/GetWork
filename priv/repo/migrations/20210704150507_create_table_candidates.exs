@@ -10,8 +10,8 @@ defmodule Getwork.Repo.Migrations.CreateTableCandidates do
       add :link, :string, size: 200
       add :picture_url, :string
 
-      add :user_id, references(:users, type: :uuid), null: false
-      add :address_id, references(:addresses, type: :uuid), null: false
+      add :user_id, references(:users, type: :uuid, on_delete: :delete_all), null: false
+      add :address_id, references(:addresses, type: :uuid, on_delete: :delete_all), null: false
 
       timestamps()
     end

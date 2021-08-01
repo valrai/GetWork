@@ -12,9 +12,9 @@ defmodule Getwork.Skills.UpdateTest do
     setup do
       insert!(:skill)
       insert!(:skill)
-      la = insert!(:skill)
+      sk = insert!(:skill)
 
-      {:ok, skill_id: la.id}
+      {:ok, skill_id: sk.id}
     end
 
     test "should update the correct skill.", %{skill_id: id} do
@@ -38,7 +38,7 @@ defmodule Getwork.Skills.UpdateTest do
       assert match?({:error, %Ecto.Changeset{}}, result)
     end
 
-    test "should return a error if no skill is found for the given name." do
+    test "should return a error if no skill is found for the given id." do
       result = Ecto.UUID.generate() |> Skills.update_skill(%{"name" => "new name"})
 
       assert match?({:error, 404, _}, result)
