@@ -810,7 +810,7 @@ paths:
           type: string
           description: id of the user to update
         - in: body
-          name: role
+          name: data
           description: user update data
           schema:
             $ref: '#/definitions/User'
@@ -861,6 +861,41 @@ paths:
       responses:
         '204':
           description: Success
+        '404':
+          description: User not found
+          examples:
+            application/json: {
+              "errors": {
+                "detail": "resource not found"
+              }
+            }
+      tags:
+        - Users
+  /users/suspension/{id}:
+    put:
+      summary: Suspend a user account
+      description: Suspend a user account
+      operationId: suspend_account
+      parameters:
+        - in: path
+          name: id
+          required: true
+          type: string
+          description: id of the user
+      responses:
+        '200':
+          description: Success
+          examples:
+            application/json: {
+              "data": {
+                "email": "some.email@email.com",
+                "id": "44c7e2da-8c78-4b88-9071-866836d65e8c",
+                "is_active": false,
+                "roles": [],
+                "suspension_end_date": "2021-08-07",
+                "username": "username"
+              }
+            }
         '404':
           description: User not found
           examples:
