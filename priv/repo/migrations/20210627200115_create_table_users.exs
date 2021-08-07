@@ -8,7 +8,7 @@ defmodule Getwork.Repo.Migrations.CreateTableUsers do
       add :password_hash, :string, null: false
       add :username, :string, size: 50, null: false
       add :is_active, :boolean, default: true, null: false
-      add :suspension_end_date, :naive_datetime
+      add :suspension_end_date, :date
 
       timestamps()
     end

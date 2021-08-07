@@ -19,7 +19,7 @@ defmodule Getwork.Users.User do
     field :is_active, :boolean, default: true
     field :password, :string, virtual: true
     field :password_hash, :string
-    field :suspension_end_date, :naive_datetime
+    field :suspension_end_date, :date
     field :username, :string
 
     many_to_many :roles, Role, join_through: "user_roles", on_replace: :delete

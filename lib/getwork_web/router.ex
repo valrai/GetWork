@@ -10,10 +10,20 @@ defmodule GetworkWeb.Router do
     plug BasicAuthPlug
   end
 
+  scope "/api/users", GetworkWeb do
+    pipe_through :api
+
+    post "/", UserController, :create
+    get "/", UserController, :index
+    get "/:id", UserController, :show
+    delete "/:id", UserController, :delete
+    put "/:id", UserController, :update
+    put "/suspension/:id", UserController, :suspend_account
+  end
+
   scope "/api", GetworkWeb do
     pipe_through :api
 
-    resources "/users", UserController
     resources "/claims", ClaimController
     resources "/roles", RoleController
     resources "/addresses", AddressController

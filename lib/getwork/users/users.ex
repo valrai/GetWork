@@ -157,6 +157,38 @@ defmodule Getwork.Users do
     end
   end
 
+  @doc """
+  Suspends a user account.
+
+  ## Examples
+
+      iex> suspend_user_account(%User{})
+      {:ok, %Getwork.Users.User{}}
+
+      iex> suspend_user_account("c19763df-42ef-463b-9e78-86355f9d3673")
+      {:ok, %Getwork.Users.User{}}
+
+      iex> suspend_user_account("d2642c20-ec14-408d-9324-7fd4e76ffcc1")
+      {:error, 404, "resource not found"}
+
+  """
+
+  def suspend_user_account(%User{} = user) do
+    user
+    |> Ecto.Changeset.change(is_active: false, suspension_end_date: Date.utc_today())
+    |> Repo.update()
+  end
+
+  def suspend_user_account(id) do
+    User
+    |> Repo.get(id)
+    |> Repo.preload(:roles)
+    |> case do
+      nil -> {:error, 404, "resource not found"}
+      user -> suspend_user_account(user)
+    end
+  end
+
   defp apply_filter(query, params, param_name) do
     if Map.has_key?(params, param_name) do
       param_value = Map.get(params, param_name)

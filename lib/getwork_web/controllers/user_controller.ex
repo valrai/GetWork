@@ -38,4 +38,10 @@ defmodule GetworkWeb.UserController do
       send_resp(conn, :no_content, "")
     end
   end
+
+  def suspend_account(conn, %{"id" => id}) do
+    with {:ok, %User{} = user} <- Users.suspend_user_account(id) do
+      render(conn, "show.json", user: user)
+    end
+  end
 end
